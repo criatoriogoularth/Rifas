@@ -1,0 +1,29 @@
+<%- include('../partials/admin-start') %>
+
+<h1>Sortear: <%= rifa.title %></h1>
+<% if (error) { %><div class="error-box"><%= error %></div><% } %>
+<p>Números vendidos até agora: <strong><%= soldCount %></strong> (mínimo necessário: <%= rifa.min_numbers_to_draw %>)</p>
+
+<div class="grid grid-3" style="align-items:start">
+  <div class="ticket">
+    <h3>Sorteio Ao Vivo (online)</h3>
+    <p>O sistema escolhe aleatoriamente entre os números pagos, usando uma semente registrada para auditoria.</p>
+    <form method="POST" action="/o/<%= org.slug %>/admin/rifas/<%= rifa.id %>/sortear/online" onsubmit="return confirm('Confirmar sorteio? Essa ação é definitiva.')">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <button class="btn btn-primary btn-block" type="submit">Sortear agora</button>
+    </form>
+  </div>
+
+  <div class="ticket">
+    <h3>Loteria Federal</h3>
+    <p>Informe o concurso e o resultado do 1º prêmio. O sistema identifica o número vencedor automaticamente.</p>
+    <form method="POST" action="/o/<%= org.slug %>/admin/rifas/<%= rifa.id %>/sortear/federal">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <div class="field"><label>Concurso</label><input type="text" name="concurso" required></div>
+      <div class="field"><label>Resultado (1º prêmio)</label><input type="text" name="federal_result" placeholder="Ex: 12345" required></div>
+      <button class="btn btn-secondary btn-block" type="submit">Aplicar resultado</button>
+    </form>
+  </div>
+</div>
+
+<%- include('../partials/admin-end') %>

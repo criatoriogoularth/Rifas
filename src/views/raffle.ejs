@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><%- include('partials/head') %></head>
+<body>
+<%- include('partials/public-header') %>
+
+<section class="section container">
+  <% if (typeof error !== 'undefined' && error) { %><div class="error-box"><%= error %></div><% } %>
+
+  <% if (rifa.cover_image_url) { %>
+    <img src="<%= rifa.cover_image_url %>" style="width:100%;max-height:380px;object-fit:cover;border-radius:14px;margin-bottom:20px">
+  <% } %>
+
+  <span class="eyebrow"><%= rifa.status === 'active' ? 'Rifa ativa' : rifa.status %></span>
+  <h1><%= rifa.title %></h1>
+  <p><%= rifa.description %></p>
+
+  <% if (rifa.video_url) {
+    const isYoutube = /youtube\.com|youtu\.be/.test(rifa.video_url);
+    const isVimeo = /vimeo\.com/.test(rifa.video_url);
+    let embedUrl = rifa.video_url;
+    if (isYoutube) {
+      const idMatch = rifa.video_url.match(/(?:v=|youtu\.be\/)([\w-]+)/);
+      if (idMatch) embedUrl = `https://www.youtube.com/embed/${idMatch[1]}`;
+    } else if (isVimeo) {
+      const idMatch = rifa.video_url.match(/vimeo\.com\/(\d+)/);
+      if (idMatch) embedUrl = `https://player.vimeo.com/video/${idMatch[1]}`;
+    }
+  %>
+    <div class="ticket" style="padding:0;overflow:hidden;margin-bottom:20px">
+      <% if (isYoutube || isVimeo) { %>
+        <div style="aspect-ratio:16/9"><iframe src="<%= embedUrl %>" style="width:100%;height:100%;border:0" allowfullscreen></iframe></div>
+      <% } else { %>
+        <video src="<%= rifa.video_url %>" controls style="width:100%;display:block"></video>
+      <% } %>
+    </div>
+  <% } %>
+
+  <% if (rifa.images && rifa.images.length) { %>
+    <div class="grid" style="grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px">
+      <% rifa.images.forEach(url => { %>
+        <img src="<%= url %>" style="border-radius:8px;aspect-ratio:1;object-fit:cover;width:100%">
+      <% }) %>
+    </div>
+  <% } %>
+
+  <div class="progress"><div style="width:<%= Math.min(100, Math.round((rifa.sold_count / rifa.total_numbers) * 100)) %>%"></div></div>
+  <p><%= rifa.sold_count %> de <%= rifa.total_numbers %> números vendidos · <span class="price-tag">R$ <%= Number(rifa.price_per_number).toFixed(2).replace('.',',') %> por número</span></p>
+
+  <% if (!user) { %>
+    <div class="error-box">Você precisa <a href="/o/<%= org.slug %>/entrar?next=/o/<%= org.slug %>/rifas/<%= rifa.slug %>"><strong>entrar</strong></a> ou <a href="/o/<%= org.slug %>/cadastrar"><strong>criar uma conta</strong></a> para comprar números.</div>
+  <% } else { %>
+
+  <div class="ticket" style="margin:24px 0">
+    <h3>Escolha automática</h3>
+    <form method="POST" action="/o/<%= org.slug %>/rifas/<%= rifa.slug %>/reservar" style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <input type="hidden" name="mode" value="auto">
+      <div class="field" style="margin:0;width:140px">
+        <label>Quantidade</label>
+        <input type="number" name="quantity" value="5" min="1" max="<%= rifa.total_numbers %>">
+      </div>
+      <button class="btn btn-secondary" type="submit">Números aleatórios</button>
+    </form>
+  </div>
+
+  <% if (rifa.total_numbers <= 2000) { %>
+  <div class="ticket">
+    <h3>Ou escolha manualmente</h3>
+    <p>Clique nos números disponíveis abaixo.</p>
+    <form method="POST" action="/o/<%= org.slug %>/rifas/<%= rifa.slug %>/reservar" id="manualForm">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <input type="hidden" name="mode" value="manual">
+      <input type="hidden" name="numbers" id="numbersInput">
+      <div class="number-grid" id="numberGrid">
+        <% const takenSet = {}; unavailable.forEach(u => takenSet[u.number] = u.status); %>
+        <% for (let n = 0; n < rifa.total_numbers; n++) { %>
+          <% const isTaken = !!takenSet[n]; %>
+          <div class="number-cell<%= isTaken ? ' taken' : '' %>" data-n="<%= n %>"><%= String(n).padStart(rifa.digits, '0') %></div>
+        <% } %>
+      </div>
+      <button class="btn btn-primary" type="submit" id="manualSubmit" disabled>Comprar selecionados</button>
+    </form>
+  </div>
+  <% } else { %>
+  <div class="ticket">
+    <p style="margin:0">Esta rifa tem <%= rifa.total_numbers.toLocaleString('pt-BR') %> números — use a <strong>escolha automática</strong> acima para uma seleção rápida e aleatória.</p>
+  </div>
+  <% } %>
+  <% } %>
+</section>
+
+<script>
+  const grid = document.getElementById('numberGrid');
+  const submitBtn = document.getElementById('manualSubmit');
+  const numbersInput = document.getElementById('numbersInput');
+  const selected = new Set();
+  if (grid) {
+    grid.addEventListener('click', (e) => {
+      const cell = e.target.closest('.number-cell');
+      if (!cell || cell.classList.contains('taken')) return;
+      const n = cell.dataset.n;
+      if (selected.has(n)) { selected.delete(n); cell.classList.remove('selected'); }
+      else { selected.add(n); cell.classList.add('selected'); }
+      numbersInput.value = [...selected].join(',');
+      submitBtn.disabled = selected.size === 0;
+    });
+  }
+</script>
+
+<%- include('partials/public-footer') %>
+</body>
+</html>

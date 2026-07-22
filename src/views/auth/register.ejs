@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><%- include('../partials/head') %></head>
+<body>
+<%- include('../partials/public-header') %>
+
+<section class="section container">
+  <div class="ticket form-card">
+    <span class="eyebrow">Comece agora</span>
+    <h2>Criar conta</h2>
+    <% errors.forEach(e => { %><div class="error-box"><%= e.msg %></div><% }) %>
+    <form method="POST" action="/o/<%= org.slug %>/cadastrar">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <div class="field"><label>Nome completo</label><input type="text" name="name" value="<%= old.name || '' %>" required></div>
+      <div class="field"><label>CPF</label><input type="text" name="cpf" value="<%= old.cpf || '' %>" required></div>
+      <div class="field"><label>Telefone</label><input type="text" name="phone" value="<%= old.phone || '' %>"></div>
+      <div class="field"><label>E-mail</label><input type="email" name="email" value="<%= old.email || '' %>" required></div>
+      <div class="field"><label>Senha</label><input type="password" name="password" required minlength="8"></div>
+      <div class="field" style="display:flex;align-items:center;gap:8px">
+        <input type="checkbox" name="lgpd" style="width:auto" required>
+        <label style="margin:0">Aceito os termos de uso e a política de privacidade (LGPD)</label>
+      </div>
+      <button class="btn btn-primary btn-block" type="submit">Criar conta</button>
+    </form>
+    <p style="margin-top:16px;font-size:.88rem">Já tem conta? <a href="/o/<%= org.slug %>/entrar"><strong>Entrar</strong></a></p>
+  </div>
+</section>
+
+<%- include('../partials/public-footer') %>
+</body>
+</html>

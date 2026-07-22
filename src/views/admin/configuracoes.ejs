@@ -1,0 +1,30 @@
+<%- include('../partials/admin-start') %>
+
+<h1>Configurações</h1>
+<% if (success) { %><div class="success-box">Configurações salvas.</div><% } %>
+
+<form method="POST" action="/o/<%= org.slug %>/admin/configuracoes" style="max-width:640px">
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+  <h3>Loja</h3>
+  <div class="field"><label>Nome do site</label><input type="text" name="site_name" value="<%= config.site_name || '' %>"></div>
+  <div class="field"><label>WhatsApp</label><input type="text" name="whatsapp" value="<%= org.whatsapp || '' %>"></div>
+  <div class="field"><label>E-mail de suporte</label><input type="email" name="support_email" value="<%= org.support_email || '' %>"></div>
+
+  <h3>SEO</h3>
+  <div class="field"><label>Título SEO</label><input type="text" name="seo_title" value="<%= config.seo_title || '' %>"></div>
+  <div class="field"><label>Descrição SEO</label><textarea name="seo_description" rows="2"><%= config.seo_description || '' %></textarea></div>
+  <div class="field"><label>Google Analytics ID</label><input type="text" name="google_analytics_id" value="<%= config.google_analytics_id || '' %>"></div>
+  <div class="field"><label>Meta Pixel ID</label><input type="text" name="meta_pixel_id" value="<%= config.meta_pixel_id || '' %>"></div>
+
+  <h3>Pagamento</h3>
+  <div class="field">
+    <label>Access Token Mercado Pago (PIX)</label>
+    <input type="password" name="mp_access_token" placeholder="Deixe em branco para manter o atual">
+    <p style="font-size:.78rem;margin-top:6px">Se não informado, a plataforma usa a conta mestre para processar seus pagamentos até você conectar a sua própria conta Mercado Pago.</p>
+  </div>
+
+  <button class="btn btn-primary btn-block" type="submit">Salvar configurações</button>
+</form>
+
+<%- include('../partials/admin-end') %>

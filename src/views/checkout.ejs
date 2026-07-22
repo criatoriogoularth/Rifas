@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><%- include('partials/head') %></head>
+<body>
+<%- include('partials/public-header') %>
+
+<section class="section container">
+  <div class="ticket form-card">
+    <span class="eyebrow">Resumo da reserva</span>
+    <h2><%= reserva.rifa_title %></h2>
+    <p>Números reservados: <strong><%= reserva.numbers.map(n => String(n).padStart(2,'0')).join(', ') %></strong></p>
+    <p>Quantidade: <%= reserva.quantity %></p>
+    <p class="price-tag" style="font-size:1.3rem">Total: R$ <%= Number(reserva.total_amount).toFixed(2).replace('.',',') %></p>
+    <p style="font-size:.82rem">Sua reserva expira em alguns minutos. Finalize o pagamento para garantir seus números.</p>
+    <form method="POST" action="/o/<%= org.slug %>/checkout/<%= reserva.id %>/pagar">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <button class="btn btn-primary btn-block" type="submit">Pagar com PIX</button>
+    </form>
+  </div>
+</section>
+
+<%- include('partials/public-footer') %>
+</body>
+</html>

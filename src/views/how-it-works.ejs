@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><%- include('partials/head') %></head>
+<body>
+<%- include('partials/public-header') %>
+
+<section class="section container">
+  <span class="eyebrow">Guia rápido</span>
+  <h1>Como funciona</h1>
+  <div class="grid grid-3">
+    <div class="ticket"><span class="eyebrow">Passo 1</span><h3>Escolha a rifa</h3><p>Veja o prêmio, o valor por número e a data prevista do sorteio.</p></div>
+    <div class="ticket"><span class="eyebrow">Passo 2</span><h3>Escolha seus números</h3><p>Selecione manualmente ou deixe o sistema sortear números aleatórios pra você.</p></div>
+    <div class="ticket"><span class="eyebrow">Passo 3</span><h3>Pague via PIX</h3><p>Confirmação automática assim que o pagamento cai — sem espera, sem burocracia.</p></div>
+  </div>
+  <div class="ticket" style="margin-top:24px">
+    <h3>Sobre os sorteios</h3>
+    <p>O sorteio pode ser feito <strong>ao vivo</strong>, com seleção aleatória entre os números pagos, ou seguindo o resultado da <strong>Loteria Federal</strong>. Todos os ganhadores ficam publicados na página de <a href="/o/<%= org.slug %>/ganhadores">ganhadores</a>.</p>
+  </div>
+</section>
+
+<%- include('partials/public-footer') %>
+</body>
+</html>

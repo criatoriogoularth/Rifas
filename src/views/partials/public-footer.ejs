@@ -1,0 +1,13 @@
+<footer class="site-footer">
+  <div class="container">
+    <div>
+      <strong><%= org.name %></strong><br>
+      <% if (org.support_email) { %>Contato: <%= org.support_email %><br><% } %>
+      <% if (org.whatsapp) { %>WhatsApp: <%= org.whatsapp %><% } %>
+    </div>
+    <div>
+      <a href="/o/<%= org.slug %>/como-funciona">Como Funciona</a> ·
+      <a href="/o/<%= org.slug %>/ganhadores">Ganhadores</a>
+    </div>
+  </div>
+</footer>

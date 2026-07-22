@@ -1,0 +1,59 @@
+<%- include('../partials/admin-start') %>
+
+<h1>Fotos e Vídeo — <%= rifa.title %></h1>
+<% if (error) { %><div class="error-box"><%= error %></div><% } %>
+
+<div class="grid" style="grid-template-columns:1fr 1fr;align-items:start">
+  <div class="ticket">
+    <h3>Foto de capa</h3>
+    <% if (rifa.cover_image_url) { %>
+      <img src="<%= rifa.cover_image_url %>" style="border-radius:10px;margin-bottom:12px;max-height:180px;object-fit:cover;width:100%">
+    <% } %>
+    <form method="POST" action="/o/<%= org.slug %>/admin/rifas/<%= rifa.id %>/midia" enctype="multipart/form-data">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <div class="field"><label>Trocar foto de capa (JPG, PNG ou WEBP, até 60MB)</label><input type="file" name="cover_image" accept="image/*"></div>
+      <button class="btn btn-secondary btn-block" type="submit">Enviar capa</button>
+    </form>
+  </div>
+
+  <div class="ticket">
+    <h3>Vídeo</h3>
+    <% if (rifa.video_url) { %>
+      <p style="font-size:.82rem;word-break:break-all">Atual: <%= rifa.video_url %></p>
+    <% } %>
+    <form method="POST" action="/o/<%= org.slug %>/admin/rifas/<%= rifa.id %>/midia" enctype="multipart/form-data">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <div class="field"><label>Link externo (YouTube, Vimeo etc.)</label><input type="url" name="video_external_url" placeholder="https://youtube.com/watch?v=..."></div>
+      <p style="text-align:center;font-size:.8rem;color:var(--ink-soft);margin:8px 0">— ou —</p>
+      <div class="field"><label>Enviar arquivo de vídeo (MP4, WebM ou MOV)</label><input type="file" name="video_file" accept="video/*"></div>
+      <button class="btn btn-secondary btn-block" type="submit">Salvar vídeo</button>
+    </form>
+  </div>
+</div>
+
+<div class="ticket" style="margin-top:20px">
+  <h3>Galeria de fotos</h3>
+  <form method="POST" action="/o/<%= org.slug %>/admin/rifas/<%= rifa.id %>/midia" enctype="multipart/form-data" style="margin-bottom:18px">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <div class="field"><label>Adicionar fotos (pode selecionar várias, até 8 por vez)</label><input type="file" name="gallery_images" accept="image/*" multiple></div>
+    <button class="btn btn-primary" type="submit">Adicionar à galeria</button>
+  </form>
+
+  <% if (images.length === 0) { %>
+    <p>Nenhuma foto na galeria ainda.</p>
+  <% } else { %>
+  <div class="grid" style="grid-template-columns:repeat(4,1fr);gap:10px">
+    <% images.forEach(img => { %>
+      <div style="position:relative">
+        <img src="<%= img.url %>" style="border-radius:8px;aspect-ratio:1;object-fit:cover;width:100%">
+        <form method="POST" action="/o/<%= org.slug %>/admin/rifas/<%= rifa.id %>/midia/<%= img.id %>/excluir" style="margin-top:4px">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <button class="btn btn-ghost" style="width:100%;padding:4px;font-size:.75rem;color:var(--brick)">Remover</button>
+        </form>
+      </div>
+    <% }) %>
+  </div>
+  <% } %>
+</div>
+
+<%- include('../partials/admin-end') %>

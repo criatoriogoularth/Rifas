@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><%- include('../partials/head') %></head>
+<body>
+<%- include('../partials/public-header') %>
+
+<section class="section container">
+  <div class="ticket form-card">
+    <span class="eyebrow">Bem-vindo de volta</span>
+    <h2>Entrar</h2>
+    <% errors.forEach(e => { %><div class="error-box"><%= e.msg %></div><% }) %>
+    <form method="POST" action="/o/<%= org.slug %>/entrar">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <input type="hidden" name="next" value="<%= next %>">
+      <div class="field"><label>E-mail</label><input type="email" name="email" value="<%= old.email || '' %>" required></div>
+      <div class="field"><label>Senha</label><input type="password" name="password" required></div>
+      <button class="btn btn-primary btn-block" type="submit">Entrar</button>
+    </form>
+    <p style="margin-top:16px;font-size:.88rem">Não tem conta? <a href="/o/<%= org.slug %>/cadastrar"><strong>Cadastre-se</strong></a></p>
+  </div>
+</section>
+
+<%- include('../partials/public-footer') %>
+</body>
+</html>

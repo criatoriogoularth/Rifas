@@ -1,0 +1,29 @@
+<%- include('../partials/admin-start') %>
+
+<h1>Clientes</h1>
+<form method="GET" style="margin-bottom:16px;max-width:360px">
+  <input type="text" name="q" value="<%= q %>" placeholder="Buscar por nome, e-mail ou CPF">
+</form>
+
+<table>
+  <thead><tr><th>Nome</th><th>CPF</th><th>E-mail</th><th>Telefone</th><th>Status</th><th>Ações</th></tr></thead>
+  <tbody>
+    <% clientes.forEach(c => { %>
+      <tr>
+        <td><%= c.name %></td>
+        <td><%= c.cpf || '—' %></td>
+        <td><%= c.email %></td>
+        <td><%= c.phone || '—' %></td>
+        <td><%= c.blocked ? 'Bloqueado' : 'Ativo' %></td>
+        <td>
+          <form method="POST" action="/o/<%= org.slug %>/admin/clientes/<%= c.id %>/bloquear">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <button class="btn btn-ghost" style="padding:6px 12px"><%= c.blocked ? 'Desbloquear' : 'Bloquear' %></button>
+          </form>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
+
+<%- include('../partials/admin-end') %>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><%- include('partials/head') %></head>
+<body>
+<%- include('partials/public-header') %>
+
+<section class="section container">
+  <span class="eyebrow">Transparência</span>
+  <h1>Ganhadores</h1>
+  <% if (winners.length === 0) { %>
+    <p>Ainda não temos ganhadores registrados.</p>
+  <% } else { %>
+  <div class="grid grid-3">
+    <% winners.forEach(w => { %>
+      <div class="ticket">
+        <span class="eyebrow">Número <%= String(w.numero).padStart(2,'0') %></span>
+        <h3><%= w.name %></h3>
+        <p><%= w.title %></p>
+        <p style="font-size:.8rem"><%= new Date(w.created_at).toLocaleDateString('pt-BR') %></p>
+      </div>
+    <% }) %>
+  </div>
+  <% } %>
+</section>
+
+<%- include('partials/public-footer') %>
+</body>
+</html>

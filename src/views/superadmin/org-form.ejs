@@ -1,0 +1,23 @@
+<%- include('../partials/master-start') %>
+
+<h1>Nova Organização</h1>
+<% errors.forEach(e => { %><div class="error-box"><%= e.msg %></div><% }) %>
+
+<form method="POST" action="/master/organizacoes" style="max-width:520px">
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+  <h3>Dados da organização</h3>
+  <div class="field"><label>Nome</label><input type="text" name="name" required></div>
+  <div class="field"><label>Slug (usado na URL: /o/seu-slug/)</label><input type="text" name="slug" pattern="[a-z0-9\-]+" required></div>
+  <div class="field"><label>E-mail de suporte</label><input type="email" name="support_email"></div>
+  <div class="field"><label>Taxa da plataforma (%)</label><input type="number" step="0.1" name="fee_percent" value="8"></div>
+
+  <h3>Administrador da organização</h3>
+  <div class="field"><label>Nome do admin</label><input type="text" name="admin_name" required></div>
+  <div class="field"><label>E-mail do admin</label><input type="email" name="admin_email" required></div>
+  <div class="field"><label>Senha inicial</label><input type="password" name="admin_password" required minlength="8"></div>
+
+  <button class="btn btn-primary btn-block" type="submit">Criar organização</button>
+</form>
+
+<%- include('../partials/master-end') %>

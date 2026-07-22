@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><%- include('partials/head') %></head>
+<body>
+<%- include('partials/public-header') %>
+
+<section class="section container">
+  <div class="ticket form-card pix-box" id="pixCard">
+    <span class="eyebrow">Pague com PIX</span>
+    <h2>R$ <%= Number(pedido.total_amount).toFixed(2).replace('.',',') %></h2>
+    <% if (qrCodeBase64) { %>
+      <img src="data:image/png;base64,<%= qrCodeBase64 %>" alt="QR Code PIX" style="width:220px;margin:0 auto">
+    <% } %>
+    <p>Escaneie o QR Code ou use o PIX Copia e Cola abaixo:</p>
+    <div class="pix-code" id="pixCode"><%= copiaECola %></div>
+    <button class="btn btn-secondary" onclick="copyPix()">Copiar código</button>
+    <% if (simulated) { %>
+      <div class="success-box" style="margin-top:18px;text-align:left">
+        <strong>Modo de teste local:</strong> nenhum gateway de pagamento está configurado ainda,
+        então este é um PIX simulado. Clique abaixo pra simular a confirmação do pagamento e ver
+        o resto do fluxo (números marcados como vendidos, notificação, etc.).
+      </div>
+      <form method="POST" action="/o/<%= org.slug %>/pedidos/<%= pedido.id %>/simular-pagamento">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        <button class="btn btn-primary btn-block" type="submit">Simular pagamento confirmado</button>
+      </form>
+    <% } %>
+    <p id="statusMsg" style="margin-top:18px;font-weight:600">Aguardando confirmação do pagamento...</p>
+  </div>
+</section>
+
+<script>
+  function copyPix() {
+    navigator.clipboard.writeText(document.getElementById('pixCode').textContent.trim());
+    alert('Código copiado!');
+  }
+  const pedidoId = "<%= pedido.id %>";
+  async function checkStatus() {
+    try {
+      const res = await fetch(`/o/<%= org.slug %>/pedidos/${pedidoId}/status`);
+      const data = await res.json();
+      if (data.status === 'pago') {
+        document.getElementById('statusMsg').textContent = 'Pagamento confirmado! Seus números estão garantidos. 🎉';
+        document.getElementById('statusMsg').style.color = 'var(--brand)';
+        clearInterval(poller);
+      }
+    } catch (e) {}
+  }
+  const poller = setInterval(checkStatus, 4000);
+</script>
+
+<%- include('partials/public-footer') %>
+</body>
+</html>

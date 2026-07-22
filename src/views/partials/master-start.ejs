@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %> — Painel Master</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="admin-shell">
+  <aside class="admin-sidebar">
+    <a class="brand" href="/master"><span class="dot"></span>Painel Master</a>
+    <a href="/master">Dashboard</a>
+    <a href="/master/organizacoes">Organizações</a>
+    <a href="/master/logs">Logs & Auditoria</a>
+    <form method="POST" action="/master/sair" style="margin-top:16px">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <button class="btn btn-ghost" style="width:100%;border-color:rgba(255,255,255,.3);color:#fff" type="submit">Sair</button>
+    </form>
+  </aside>
+  <main class="admin-main">

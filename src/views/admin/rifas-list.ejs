@@ -1,0 +1,44 @@
+<%- include('../partials/admin-start') %>
+
+<div style="display:flex;justify-content:space-between;align-items:center">
+  <h1>Rifas</h1>
+  <a class="btn btn-primary" href="/o/<%= org.slug %>/admin/rifas/nova">+ Nova Rifa</a>
+</div>
+
+<table>
+  <thead><tr><th>Título</th><th>Preço</th><th>Vendidos</th><th>Status</th><th>Ações</th></tr></thead>
+  <tbody>
+    <% rifas.forEach(r => { %>
+      <tr>
+        <td><%= r.title %></td>
+        <td>R$ <%= Number(r.price_per_number).toFixed(2).replace('.',',') %></td>
+        <td><%= r.vendidos %> / <%= r.total_numbers %></td>
+        <td><span class="status-pill"><%= r.status %></span></td>
+        <td style="display:flex;gap:6px;flex-wrap:wrap">
+          <a class="btn btn-ghost" style="padding:6px 12px" href="/o/<%= org.slug %>/admin/rifas/<%= r.id %>/editar">Editar</a>
+          <a class="btn btn-ghost" style="padding:6px 12px" href="/o/<%= org.slug %>/admin/rifas/<%= r.id %>/midia">Fotos/Vídeo</a>
+          <a class="btn btn-ghost" style="padding:6px 12px" href="/o/<%= org.slug %>/admin/rifas/<%= r.id %>/sortear">Sortear</a>
+
+          <% if (r.status === 'active') { %>
+            <form method="POST" action="/o/<%= org.slug %>/admin/rifas/<%= r.id %>/status">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>"><input type="hidden" name="status" value="paused">
+              <button class="btn btn-ghost" style="padding:6px 12px">Pausar</button>
+            </form>
+          <% } else if (r.status === 'draft' || r.status === 'paused') { %>
+            <form method="POST" action="/o/<%= org.slug %>/admin/rifas/<%= r.id %>/status">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>"><input type="hidden" name="status" value="active">
+              <button class="btn btn-secondary" style="padding:6px 12px">Publicar</button>
+            </form>
+          <% } %>
+
+          <form method="POST" action="/o/<%= org.slug %>/admin/rifas/<%= r.id %>/excluir" onsubmit="return confirm('Excluir esta rifa? Essa ação não pode ser desfeita.')">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <button class="btn btn-ghost" style="padding:6px 12px;color:var(--brick)">Excluir</button>
+          </form>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
+
+<%- include('../partials/admin-end') %>

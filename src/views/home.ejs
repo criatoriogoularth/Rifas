@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><%- include('partials/head') %></head>
+<body>
+<%- include('partials/public-header') %>
+
+<section class="hero">
+  <div class="container">
+    <div>
+      <span class="badge-live"><span class="pulse"></span>SORTEIOS AO VIVO E VERIFICADOS</span>
+      <h1>Escolha seus números.<br>Concorra a prêmios reais.</h1>
+      <p class="lead">Compra 100% online, pagamento via PIX confirmado na hora e sorteios auditáveis. Simples assim.</p>
+      <div class="hero-stats">
+        <div class="hero-stat"><b><%= stats.total_orders %></b><span>pedidos pagos</span></div>
+        <div class="hero-stat"><b>R$ <%= Number(stats.total_paid).toLocaleString('pt-BR', {minimumFractionDigits:2}) %></b><span>distribuídos em prêmios</span></div>
+      </div>
+    </div>
+    <div class="hero-card ticket">
+      <span class="eyebrow">Como funciona</span>
+      <h3>1. Escolha a rifa</h3>
+      <p style="margin-bottom:14px">2. Selecione seus números da sorte<br>3. Pague via PIX<br>4. Aguarde o sorteio</p>
+      <a href="#rifas" class="btn btn-primary btn-block">Ver rifas ativas</a>
+    </div>
+  </div>
+</section>
+
+<section class="section container" id="rifas">
+  <div class="section-head">
+    <span class="eyebrow">Rifas em andamento</span>
+    <h2>Escolha a sua e boa sorte</h2>
+  </div>
+  <% if (raffles.length === 0) { %>
+    <p>Nenhuma rifa ativa no momento. Volte em breve!</p>
+  <% } else { %>
+  <div class="grid grid-3">
+    <% raffles.forEach(r => { %>
+      <a href="/o/<%= org.slug %>/rifas/<%= r.slug %>" class="ticket raffle-card">
+        <% if (r.cover_image_url) { %>
+          <div class="cover" style="background:url('<%= r.cover_image_url %>') center/cover;color:transparent"></div>
+        <% } else { %>
+          <div class="cover"><%= r.title %></div>
+        <% } %>
+        <div class="body">
+          <span class="status-pill">Ativa</span>
+          <h3><%= r.title %></h3>
+          <div class="progress"><div style="width:<%= Math.min(100, Math.round((r.sold_count / r.total_numbers) * 100)) %>%"></div></div>
+          <p style="margin:0"><%= r.sold_count %> / <%= r.total_numbers %> números vendidos</p>
+          <p class="price-tag">R$ <%= Number(r.price_per_number).toFixed(2).replace('.',',') %> / número</p>
+        </div>
+      </a>
+    <% }) %>
+  </div>
+  <% } %>
+</section>
+
+<% if (winners.length) { %>
+<section class="section container">
+  <div class="section-head">
+    <span class="eyebrow">Últimos ganhadores</span>
+    <h2>Quem já levou prêmio por aqui</h2>
+  </div>
+  <div class="grid grid-3">
+    <% winners.forEach(w => { %>
+      <div class="ticket">
+        <span class="eyebrow">Número <%= String(w.numero).padStart(2,'0') %></span>
+        <h3><%= w.name %></h3>
+        <p><%= w.title %></p>
+      </div>
+    <% }) %>
+  </div>
+</section>
+<% } %>
+
+<%- include('partials/public-footer') %>
+</body>
+</html>

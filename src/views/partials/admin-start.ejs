@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><%- include('../partials/head') %></head>
+<body>
+<div class="admin-shell">
+  <aside class="admin-sidebar">
+    <a class="brand" href="/o/<%= org.slug %>/admin"><span class="dot"></span><%= org.name %></a>
+    <a href="/o/<%= org.slug %>/admin">Dashboard</a>
+    <a href="/o/<%= org.slug %>/admin/rifas">Rifas</a>
+    <a href="/o/<%= org.slug %>/admin/clientes">Clientes</a>
+    <a href="/o/<%= org.slug %>/admin/financeiro">Financeiro</a>
+    <a href="/o/<%= org.slug %>/admin/relatorios">Relatórios</a>
+    <a href="/o/<%= org.slug %>/admin/aparencia">Aparência</a>
+    <a href="/o/<%= org.slug %>/admin/configuracoes">Configurações</a>
+    <a href="/o/<%= org.slug %>/">Ver loja pública ↗</a>
+    <form method="POST" action="/o/<%= org.slug %>/sair" style="margin-top:16px">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <button class="btn btn-ghost" style="width:100%;border-color:rgba(255,255,255,.3);color:#fff" type="submit">Sair</button>
+    </form>
+  </aside>
+  <main class="admin-main">

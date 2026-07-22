@@ -1,0 +1,29 @@
+<%- include('../partials/admin-start') %>
+
+<h1>Dashboard</h1>
+<div class="stat-cards">
+  <div class="stat-card"><b><%= metrics.vendas_pagas %></b><span>vendas pagas</span></div>
+  <div class="stat-card"><b><%= metrics.aguardando %></b><span>pedidos aguardando pagamento</span></div>
+  <div class="stat-card"><b>R$ <%= Number(metrics.valor_vendido).toFixed(2).replace('.',',') %></b><span>total arrecadado</span></div>
+  <div class="stat-card"><b>R$ <%= Number(metrics.taxa_plataforma).toFixed(2).replace('.',',') %></b><span>taxa da plataforma</span></div>
+  <div class="stat-card"><b><%= rifasAtivas %></b><span>rifas ativas</span></div>
+  <div class="stat-card"><b><%= clientes %></b><span>clientes cadastrados</span></div>
+</div>
+
+<h3>Pedidos recentes</h3>
+<table>
+  <thead><tr><th>Cliente</th><th>Rifa</th><th>Valor</th><th>Status</th><th>Data</th></tr></thead>
+  <tbody>
+    <% recentes.forEach(p => { %>
+      <tr>
+        <td><%= p.cliente %></td>
+        <td><%= p.rifa_title %></td>
+        <td>R$ <%= Number(p.total_amount).toFixed(2).replace('.',',') %></td>
+        <td><%= p.status %></td>
+        <td><%= new Date(p.created_at).toLocaleDateString('pt-BR') %></td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
+
+<%- include('../partials/admin-end') %>

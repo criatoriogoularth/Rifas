@@ -1,0 +1,67 @@
+<%- include('../partials/admin-start') %>
+
+<h1><%= title %></h1>
+<% errors.forEach(e => { %><div class="error-box"><%= e.msg %></div><% }) %>
+
+<form method="POST" action="<%= rifa.id ? `/o/${org.slug}/admin/rifas/${rifa.id}/editar` : `/o/${org.slug}/admin/rifas` %>" style="max-width:640px">
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+  <div class="field"><label>Título</label><input type="text" name="title" value="<%= rifa.title || '' %>" required></div>
+  <div class="field"><label>Descrição</label><textarea name="description" rows="3"><%= rifa.description || '' %></textarea></div>
+  <div class="field"><label>Regulamento</label><textarea name="regulation" rows="4"><%= rifa.regulation || '' %></textarea></div>
+
+  <div class="field"><label>Valor por número (R$)</label><input type="number" step="0.01" name="price_per_number" value="<%= rifa.price_per_number || '' %>" required></div>
+
+  <% if (!rifa.id) { %>
+  <div class="field">
+    <label>Quantidade de números</label>
+    <select name="total_numbers" id="totalNumbers">
+      <option value="100">100 (00-99)</option>
+      <option value="1000">1.000 (000-999)</option>
+      <option value="10000">10.000 (0000-9999)</option>
+      <option value="custom">Personalizado</option>
+    </select>
+  </div>
+  <div class="field" id="customQtyField" style="display:none"><label>Quantidade personalizada</label><input type="number" name="total_numbers_custom" min="10"></div>
+  <div class="field"><label>Dígitos exibidos</label><input type="number" name="digits" value="2" min="2" max="6"></div>
+  <% } %>
+
+  <div class="field"><label>Mínimo de números vendidos para sortear</label><input type="number" name="min_numbers_to_draw" value="<%= rifa.min_numbers_to_draw || 1 %>"></div>
+
+  <div class="field">
+    <label>Tipo de sorteio</label>
+    <select name="draw_type">
+      <option value="online" <%= rifa.draw_type === 'online' ? 'selected' : '' %>>Ao Vivo (online)</option>
+      <option value="loteria_federal" <%= rifa.draw_type === 'loteria_federal' ? 'selected' : '' %>>Loteria Federal</option>
+    </select>
+  </div>
+
+  <div class="field"><label>Data prevista do sorteio</label><input type="datetime-local" name="draw_date"></div>
+
+  <button class="btn btn-primary btn-block" type="submit">Salvar rifa</button>
+</form>
+
+<script>
+  const sel = document.getElementById('totalNumbers');
+  const customField = document.getElementById('customQtyField');
+  if (sel) {
+    sel.addEventListener('change', () => {
+      customField.style.display = sel.value === 'custom' ? 'block' : 'none';
+    });
+  }
+  // Ajusta o campo real enviado quando "personalizado" é escolhido
+  const form = sel ? sel.closest('form') : null;
+  if (form) {
+    form.addEventListener('submit', () => {
+      if (sel.value === 'custom') {
+        const customInput = document.querySelector('[name=total_numbers_custom]');
+        sel.name = '';
+        const hidden = document.createElement('input');
+        hidden.type = 'hidden'; hidden.name = 'total_numbers'; hidden.value = customInput.value;
+        form.appendChild(hidden);
+      }
+    });
+  }
+</script>
+
+<%- include('../partials/admin-end') %>

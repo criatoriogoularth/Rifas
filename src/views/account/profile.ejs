@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><%- include('../partials/head') %></head>
+<body>
+<%- include('../partials/public-header') %>
+
+<section class="section container">
+  <h1>Meus Dados</h1>
+  <% if (typeof success !== 'undefined' && success) { %><div class="success-box">Alterações salvas com sucesso.</div><% } %>
+  <% errors.forEach(e => { %><div class="error-box"><%= e.msg %></div><% }) %>
+
+  <div class="ticket form-card">
+    <h3>Dados pessoais</h3>
+    <form method="POST" action="/o/<%= org.slug %>/minha-conta/dados">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <div class="field"><label>Nome</label><input type="text" name="name" value="<%= profile.name %>" required></div>
+      <div class="field"><label>CPF</label><input type="text" name="cpf" value="<%= profile.cpf || '' %>"></div>
+      <div class="field"><label>Telefone</label><input type="text" name="phone" value="<%= profile.phone || '' %>"></div>
+      <div class="field"><label>E-mail</label><input type="email" value="<%= profile.email %>" disabled></div>
+      <button class="btn btn-secondary btn-block" type="submit">Salvar dados</button>
+    </form>
+  </div>
+
+  <div class="ticket form-card">
+    <h3>Alterar senha</h3>
+    <form method="POST" action="/o/<%= org.slug %>/minha-conta/senha">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <div class="field"><label>Senha atual</label><input type="password" name="current_password" required></div>
+      <div class="field"><label>Nova senha</label><input type="password" name="new_password" required minlength="8"></div>
+      <button class="btn btn-primary btn-block" type="submit">Atualizar senha</button>
+    </form>
+  </div>
+</section>
+
+<%- include('../partials/public-footer') %>
+</body>
+</html>

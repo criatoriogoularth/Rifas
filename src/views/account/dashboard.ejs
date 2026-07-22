@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><%- include('../partials/head') %></head>
+<body>
+<%- include('../partials/public-header') %>
+
+<section class="section container">
+  <span class="eyebrow">Sua área</span>
+  <h1>Minha Conta</h1>
+  <p><a href="/o/<%= org.slug %>/minha-conta/dados">Editar meus dados e senha →</a></p>
+
+  <h3 style="margin-top:32px">Meus pedidos</h3>
+  <% if (pedidos.length === 0) { %>
+    <p>Você ainda não fez nenhuma compra.</p>
+  <% } else { %>
+  <table>
+    <thead><tr><th>Rifa</th><th>Números</th><th>Valor</th><th>Status</th><th>Data</th></tr></thead>
+    <tbody>
+      <% pedidos.forEach(p => { %>
+        <tr>
+          <td><%= p.rifa_title %></td>
+          <td><%= p.numbers.map(n=>String(n).padStart(2,'0')).join(', ') %></td>
+          <td>R$ <%= Number(p.total_amount).toFixed(2).replace('.',',') %></td>
+          <td><%= p.status %></td>
+          <td><%= new Date(p.created_at).toLocaleDateString('pt-BR') %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+  <% } %>
+
+  <h3 style="margin-top:32px">Notificações</h3>
+  <% if (notificacoes.length === 0) { %><p>Nenhuma notificação por aqui ainda.</p><% } %>
+  <% notificacoes.forEach(n => { %>
+    <div class="ticket" style="margin-bottom:10px"><strong><%= n.title %></strong><p style="margin:4px 0 0"><%= n.body %></p></div>
+  <% }) %>
+</section>
+
+<%- include('../partials/public-footer') %>
+</body>
+</html>

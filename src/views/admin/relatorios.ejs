@@ -1,0 +1,18 @@
+<%- include('../partials/admin-start') %>
+
+<div style="display:flex;justify-content:space-between;align-items:center">
+  <h1>Relatórios</h1>
+  <a class="btn btn-ghost" href="/o/<%= org.slug %>/admin/relatorios/export.csv">Exportar CSV</a>
+</div>
+
+<h3>Por rifa</h3>
+<table>
+  <thead><tr><th>Rifa</th><th>Pedidos</th><th>Total arrecadado</th></tr></thead>
+  <tbody>
+    <% porRifa.forEach(r => { %>
+      <tr><td><%= r.title %></td><td><%= r.pedidos %></td><td>R$ <%= Number(r.total).toFixed(2).replace('.',',') %></td></tr>
+    <% }) %>
+  </tbody>
+</table>
+
+<%- include('../partials/admin-end') %>

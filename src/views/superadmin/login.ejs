@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<section class="section container">
+  <div class="ticket form-card">
+    <span class="eyebrow">Acesso restrito</span>
+    <h2>Painel Master</h2>
+    <% errors.forEach(e => { %><div class="error-box"><%= e.msg %></div><% }) %>
+    <form method="POST" action="/master/entrar">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <div class="field"><label>E-mail</label><input type="email" name="email" required></div>
+      <div class="field"><label>Senha</label><input type="password" name="password" required></div>
+      <button class="btn btn-primary btn-block" type="submit">Entrar</button>
+    </form>
+  </div>
+</section>
+</body>
+</html>

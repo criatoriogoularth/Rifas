@@ -1,0 +1,13 @@
+<%- include('../partials/master-start') %>
+
+<h1>Painel Master</h1>
+<div class="stat-cards">
+  <div class="stat-card"><b><%= totalOrgs %></b><span>organizações cadastradas</span></div>
+  <div class="stat-card"><b><%= orgsAtivas %></b><span>ativas</span></div>
+  <div class="stat-card"><b>R$ <%= Number(volume).toFixed(2).replace('.',',') %></b><span>volume total vendido</span></div>
+  <div class="stat-card"><b>R$ <%= Number(receita).toFixed(2).replace('.',',') %></b><span>receita da plataforma (taxas)</span></div>
+</div>
+
+<a class="btn btn-primary" href="/master/organizacoes/nova">+ Nova organização</a>
+
+<%- include('../partials/master-end') %>

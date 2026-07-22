@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="row">
+    <a class="brand" href="/"><span class="dot"></span>Plataforma de Rifas</a>
+    <div class="nav-actions">
+      <a class="btn btn-ghost" href="/master/entrar">Acesso Master</a>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container">
+    <div>
+      <span class="badge-live"><span class="pulse"></span>SAAS MULTI-EMPRESA</span>
+      <h1>O sistema completo para quem vive de rifas online.</h1>
+      <p class="lead">Cada organizador ganha sua própria loja, com pagamento PIX automático, sorteio auditável e painel financeiro completo. Você foca em vender — o sistema cuida do resto.</p>
+      <a class="btn btn-primary" href="/o/demo/" style="margin-top:8px">Ver loja de demonstração</a>
+    </div>
+    <div class="hero-card ticket">
+      <span class="eyebrow">Inclui</span>
+      <h3>Tudo em um só lugar</h3>
+      <p style="margin-bottom:0">Multi-tenant isolado por organização · PIX automático · Sorteio online ou Loteria Federal · Painel financeiro · Relatórios · Segurança de nível comercial</p>
+    </div>
+  </div>
+</section>
+
+<section class="section container">
+  <div class="section-head">
+    <span class="eyebrow">Por que esta plataforma</span>
+    <h2>Construída para escalar com o seu negócio</h2>
+  </div>
+  <div class="grid grid-3">
+    <div class="ticket"><h3>Multi-empresa</h3><p>Cada organizador administra suas próprias rifas e clientes, com dados totalmente isolados.</p></div>
+    <div class="ticket"><h3>Pagamento automático</h3><p>PIX confirmado por webhook, sem intervenção manual — número reservado vira número vendido na hora.</p></div>
+    <div class="ticket"><h3>Segurança de verdade</h3><p>Senhas com Argon2id, nunca armazenamos dados de cartão, e cada ação fica registrada em log.</p></div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div>© <%= new Date().getFullYear() %> Plataforma de Rifas</div>
+  </div>
+</footer>
+</body>
+</html>

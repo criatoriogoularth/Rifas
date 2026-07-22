@@ -1,0 +1,20 @@
+<%- include('../partials/admin-start') %>
+
+<h1>Painel Financeiro</h1>
+<table>
+  <thead><tr><th>Rifa</th><th>Cliente</th><th>Método</th><th>Valor</th><th>Status</th><th>Data</th></tr></thead>
+  <tbody>
+    <% pagamentos.forEach(p => { %>
+      <tr>
+        <td><%= p.rifa_title %></td>
+        <td><%= p.cliente %></td>
+        <td><%= p.method %></td>
+        <td>R$ <%= Number(p.amount).toFixed(2).replace('.',',') %></td>
+        <td><span class="status-pill"><%= p.status %></span></td>
+        <td><%= new Date(p.created_at).toLocaleDateString('pt-BR') %></td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
+
+<%- include('../partials/admin-end') %>

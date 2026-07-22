@@ -1,0 +1,18 @@
+<%- include('../partials/master-start') %>
+
+<h1>Logs & Auditoria</h1>
+<table>
+  <thead><tr><th>Organização</th><th>Ação</th><th>IP</th><th>Data</th></tr></thead>
+  <tbody>
+    <% logs.forEach(l => { %>
+      <tr>
+        <td><%= l.org_name || '—' %></td>
+        <td><%= l.action %></td>
+        <td><%= l.ip || '—' %></td>
+        <td><%= new Date(l.created_at).toLocaleString('pt-BR') %></td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
+
+<%- include('../partials/master-end') %>

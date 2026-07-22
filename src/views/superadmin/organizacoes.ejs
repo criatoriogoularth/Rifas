@@ -1,0 +1,37 @@
+<%- include('../partials/master-start') %>
+
+<div style="display:flex;justify-content:space-between;align-items:center">
+  <h1>Organizações</h1>
+  <a class="btn btn-primary" href="/master/organizacoes/nova">+ Nova organização</a>
+</div>
+
+<table>
+  <thead><tr><th>Nome</th><th>Slug</th><th>Rifas</th><th>Volume vendido</th><th>Taxa</th><th>Status</th><th>Ações</th></tr></thead>
+  <tbody>
+    <% orgs.forEach(o => { %>
+      <tr>
+        <td><%= o.name %></td>
+        <td><a href="/o/<%= o.slug %>/" target="_blank"><%= o.slug %> ↗</a></td>
+        <td><%= o.total_rifas %></td>
+        <td>R$ <%= Number(o.volume_vendido).toFixed(2).replace('.',',') %></td>
+        <td>
+          <form method="POST" action="/master/organizacoes/<%= o.id %>/taxa" style="display:flex;gap:6px">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <input type="number" step="0.1" name="fee_percent" value="<%= o.fee_percent %>" style="width:70px;padding:6px">
+            <button class="btn btn-ghost" style="padding:6px 10px">%</button>
+          </form>
+        </td>
+        <td><span class="status-pill"><%= o.status %></span></td>
+        <td>
+          <form method="POST" action="/master/organizacoes/<%= o.id %>/status">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <input type="hidden" name="status" value="<%= o.status === 'active' ? 'suspended' : 'active' %>">
+            <button class="btn btn-ghost" style="padding:6px 12px"><%= o.status === 'active' ? 'Suspender' : 'Reativar' %></button>
+          </form>
+        </td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
+
+<%- include('../partials/master-end') %>

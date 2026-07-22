@@ -1,0 +1,49 @@
+<%- include('../partials/admin-start') %>
+
+<h1>Aparência da Loja</h1>
+<p style="color:var(--ink-soft)">Personalize cores, fonte, logo e nome — tudo que aparece na sua loja pública (<a href="/o/<%= org.slug %>/" target="_blank">/o/<%= org.slug %>/ ↗</a>).</p>
+<% if (success) { %><div class="success-box">Aparência atualizada com sucesso.</div><% } %>
+<% if (error) { %><div class="error-box"><%= error %></div><% } %>
+
+<form method="POST" action="/o/<%= org.slug %>/admin/aparencia" enctype="multipart/form-data" style="max-width:560px">
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+  <div class="field"><label>Nome da loja</label><input type="text" name="name" value="<%= org.name %>" required></div>
+
+  <div style="display:flex;gap:16px">
+    <div class="field" style="flex:1">
+      <label>Cor principal</label>
+      <input type="color" name="primary_color" value="<%= org.primary_color || '#0F6B4C' %>" style="height:44px;padding:4px">
+    </div>
+    <div class="field" style="flex:1">
+      <label>Cor de destaque (dourado, botões, etc.)</label>
+      <input type="color" name="secondary_color" value="<%= org.secondary_color || '#D4A72C' %>" style="height:44px;padding:4px">
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Fonte dos títulos</label>
+    <select name="font_choice">
+      <option value="fraunces" <%= org.font_choice === 'fraunces' ? 'selected' : '' %>>Fraunces (clássica, editorial)</option>
+      <option value="poppins" <%= org.font_choice === 'poppins' ? 'selected' : '' %>>Poppins (moderna, arredondada)</option>
+      <option value="playfair" <%= org.font_choice === 'playfair' ? 'selected' : '' %>>Playfair Display (elegante)</option>
+      <option value="montserrat" <%= org.font_choice === 'montserrat' ? 'selected' : '' %>>Montserrat (limpa, direta)</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label>Logo</label>
+    <% if (org.logo_url) { %><img src="<%= org.logo_url %>" style="height:44px;margin-bottom:8px;border-radius:6px"><% } %>
+    <input type="file" name="logo_image" accept="image/*">
+  </div>
+
+  <div class="field">
+    <label>Favicon (ícone da aba do navegador)</label>
+    <% if (org.favicon_url) { %><img src="<%= org.favicon_url %>" style="height:28px;margin-bottom:8px;border-radius:4px"><% } %>
+    <input type="file" name="favicon_image" accept="image/*">
+  </div>
+
+  <button class="btn btn-primary btn-block" type="submit">Salvar aparência</button>
+</form>
+
+<%- include('../partials/admin-end') %>
