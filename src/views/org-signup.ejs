@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="row">
+    <a class="brand" href="/"><span class="dot"></span>Plataforma de Rifas</a>
+  </div>
+</header>
+
+<section class="section container">
+  <div class="ticket form-card" style="max-width:520px">
+    <span class="eyebrow">Comece a vender em minutos</span>
+    <h2>Criar minha loja de rifas</h2>
+    <p style="font-size:.88rem">Você ganha um painel próprio pra criar suas rifas, receber pagamentos via PIX e gerenciar seus clientes — separado de qualquer outra loja da plataforma.</p>
+
+    <% errors.forEach(e => { %><div class="error-box"><%= e.msg %></div><% }) %>
+
+    <form method="POST" action="/criar-loja">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
+      <div class="field"><label>Nome da sua loja</label><input type="text" name="store_name" value="<%= old.store_name || '' %>" placeholder="Ex: Rifas do João" required></div>
+
+      <div class="field">
+        <label>Endereço da loja</label>
+        <div style="display:flex;align-items:center;gap:6px">
+          <span style="font-size:.85rem;color:var(--ink-soft);white-space:nowrap">/o/</span>
+          <input type="text" name="slug" value="<%= old.slug || '' %>" placeholder="rifas-do-joao" pattern="[a-z0-9\-]+" required>
+        </div>
+        <p style="font-size:.75rem;margin-top:4px">Só letras minúsculas, números e hífen. Não dá pra mudar depois.</p>
+      </div>
+
+      <div class="field"><label>Seu nome completo</label><input type="text" name="admin_name" value="<%= old.admin_name || '' %>" required></div>
+      <div class="field"><label>E-mail</label><input type="email" name="email" value="<%= old.email || '' %>" required></div>
+      <div class="field"><label>Senha</label><input type="password" name="password" required minlength="8"></div>
+
+      <div class="field" style="display:flex;align-items:center;gap:8px">
+        <input type="checkbox" name="terms" style="width:auto" required>
+        <label style="margin:0">Aceito os termos de uso da plataforma</label>
+      </div>
+
+      <button class="btn btn-primary btn-block" type="submit">Criar minha loja grátis</button>
+    </form>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container"><div>© <%= new Date().getFullYear() %> Plataforma de Rifas</div></div>
+</footer>
+</body>
+</html>

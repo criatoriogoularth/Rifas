@@ -5,7 +5,7 @@ const { verifyPassword } = require('../utils/password');
 const { signToken } = require('../utils/jwt');
 
 router.get('/entrar', (req, res) => {
-  res.render('superadmin/login', { title: 'Acesso Master', errors: [] });
+  res.render('superadmin/login', { title: 'Acesso Master', errors: [], next: req.query.next || '' });
 });
 
 router.post('/entrar', async (req, res, next) => {
@@ -17,7 +17,7 @@ router.post('/entrar', async (req, res, next) => {
     );
     const user = rows[0];
     if (!user || !(await verifyPassword(user.password_hash, password))) {
-      return res.status(401).render('superadmin/login', { title: 'Acesso Master', errors: [{ msg: 'Credenciais inválidas.' }] });
+      return res.status(401).render('superadmin/login', { title: 'Acesso Master', errors: [{ msg: 'Credenciais inválidas.' }], next: req.body.next || '' });
     }
     const token = signToken({ sub: user.id, role: user.role, org: null });
     res.cookie('session', token, {
@@ -26,7 +26,8 @@ router.post('/entrar', async (req, res, next) => {
       secure: process.env.NODE_ENV === 'production',
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
-    res.redirect('/master');
+    const dest = req.body.next && req.body.next.startsWith('/master') ? req.body.next : '/master';
+    res.redirect(dest);
   } catch (err) { next(err); }
 });
 

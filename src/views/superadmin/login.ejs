@@ -13,6 +13,7 @@
     <% errors.forEach(e => { %><div class="error-box"><%= e.msg %></div><% }) %>
     <form method="POST" action="/master/entrar">
       <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <input type="hidden" name="next" value="<%= next %>">
       <div class="field"><label>E-mail</label><input type="email" name="email" required></div>
       <div class="field"><label>Senha</label><input type="password" name="password" required></div>
       <button class="btn btn-primary btn-block" type="submit">Entrar</button>

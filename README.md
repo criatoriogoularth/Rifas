@@ -163,6 +163,24 @@ manter as fotos permanentemente, escolha uma destas opções antes de ir pra pro
 Pra testar localmente ou numa organização de baixo volume, o disco padrão funciona normalmente —
 só não é confiável a longo prazo em produção sem uma dessas duas opções.
 
+## Terceiros criando a própria loja (auto-cadastro)
+
+Além de você criar organizações manualmente pelo painel master, agora qualquer pessoa pode criar a
+própria loja de rifas sozinha, sem precisar de aprovação sua:
+
+**URL:** `SUA_URL/criar-loja`
+
+A pessoa preenche nome da loja, o endereço (`/o/<slug-escolhido>/`), nome, e-mail e senha — e já cai
+direto no painel de admin da loja dela, pronta pra criar rifas. Cada loja continua **totalmente
+isolada**: rifas, clientes e financeiro de uma não aparecem pra outra.
+
+Você continua podendo ver todas as lojas (inclusive as criadas por auto-cadastro), suspender ou
+ajustar a taxa de qualquer uma delas em `/master/organizacoes`, a qualquer momento.
+
+Tem um link "Criar minha loja de rifas" na página inicial da plataforma (`SUA_URL/`) pra facilitar
+esse cadastro.
+
+
 ## Isolamento entre organizações (multi-tenant)
 
 Cada organizador só enxerga o próprio painel — isso já está garantido em duas camadas:

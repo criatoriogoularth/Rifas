@@ -19,6 +19,7 @@ const accountRoutes = require('./routes/account');
 const adminRoutes = require('./routes/admin');
 const superadminRoutes = require('./routes/superadmin');
 const masterAuthRoutes = require('./routes/masterAuth');
+const orgSignupRoutes = require('./routes/orgSignup');
 const webhookRoutes = require('./routes/webhooks');
 
 const app = express();
@@ -52,6 +53,9 @@ app.use(csrfToken);
 app.get('/', (req, res) => {
   res.render('platform-landing', { title: 'Plataforma de Rifas Online' });
 });
+
+// ---------- Auto-cadastro de lojas (qualquer pessoa pode criar sua própria loja de rifas) ----------
+app.use('/', authLimiter, csrfProtect, orgSignupRoutes);
 
 // ---------- Painel Master (superadmin da plataforma SaaS) ----------
 app.use('/master', authLimiter, csrfProtect, masterAuthRoutes);

@@ -29,13 +29,13 @@ async function seed() {
     if (orgResult.rows.length === 0) {
       const org = await client.query(
         `INSERT INTO organizations (name, slug, support_email, plan, status)
-         VALUES ('Rifas Demo', 'demo', 'contato@rifasdemo.com', 'pro', 'active')
+         VALUES ('GanhaJá', 'demo', 'contato@rifasdemo.com', 'pro', 'active')
          RETURNING id`
       );
       orgId = org.rows[0].id;
       await client.query(
         `INSERT INTO configuracoes (organization_id, site_name, seo_title)
-         VALUES ($1, 'Rifas Demo', 'Rifas Demo — Concorra e Ganhe')`,
+         VALUES ($1, 'GanhaJá', 'GanhaJá — Concorra e Ganhe')`,
         [orgId]
       );
       console.log('Organização demo criada (slug: demo).');

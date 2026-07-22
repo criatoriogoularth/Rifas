@@ -27,7 +27,10 @@ async function loadUser(req, res, next) {
 
 function requireAuth(req, res, next) {
   if (!req.user) {
-    return res.redirect(`/entrar?next=${encodeURIComponent(req.originalUrl)}`);
+    // O redirecionamento precisa apontar pro login certo: da organização (se a rota for
+    // dentro de /o/:orgSlug) ou do painel master (se não houver organização na rota).
+    const loginBase = req.org ? `/o/${req.org.slug}/entrar` : '/master/entrar';
+    return res.redirect(`${loginBase}?next=${encodeURIComponent(req.originalUrl)}`);
   }
   next();
 }
