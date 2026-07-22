@@ -103,12 +103,18 @@ um túnel como **ngrok** (`ngrok http 3000`) se quiser validar isso antes de sub
      editar depois do primeiro deploy, quando souber a URL final
    - `MP_ACCESS_TOKEN` → seu token do Mercado Pago
    - `SUPERADMIN_EMAIL` / `SUPERADMIN_PASSWORD` → credenciais do seu usuário master
-5. Deploy. Depois do primeiro deploy concluído, abra o **Shell** do serviço no Render e rode:
+5. Deploy. **No plano gratuito do Render não tem Shell** — por isso o comando `npm start` já roda a
+   migração e o seed automaticamente antes de iniciar o servidor (são seguros de rodar toda vez:
+   eles checam o que já existe antes de criar algo, então não duplicam dados a cada novo deploy).
+   Acompanhe os **Logs** do serviço: você deve ver `Migração concluída com sucesso.` e depois
+   `Superadmin criado: ...` (ou `já existe, pulando` se já tiver rodado antes).
+
+   Se seu plano do Render **tiver** Shell (planos pagos), você também pode rodar manualmente se
+   preferir:
    ```bash
    npm run migrate
    npm run seed
    ```
-   (ou rode localmente apontando `DATABASE_URL` para o mesmo banco, como no passo 1)
 
 ### Opção B — Usando o `render.yaml` (Blueprint)
 
